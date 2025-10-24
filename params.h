@@ -1,0 +1,16 @@
+int WIDTH = 2048;
+int HEIGHT = 1280;
+int NUM = 1;
+int VARIETY = 10;
+bool BLACK_AND_WHITE = false;
+unsigned char R[2] = {0, 255};
+unsigned char G[2] = {0, 255};
+unsigned char B[2] = {0, 255};
+bool RANDOM_CENTER_XY = true;
+int CENTER_X = 0;
+int CENTER_Y = 0;
+bool RANDOM_CENTER_COL = true;
+unsigned char CENTER_R = 0;
+unsigned char CENTER_G = 0;
+unsigned char CENTER_B = 0;
+unsigned char CENTER_RGB_BW = 0;
