@@ -72,7 +72,7 @@ Image img() {
 
         if (!BLACK_AND_WHITE) {
             if (RANDOM_CENTER_COL) {
-                q.emplace_back(rnd() % HEIGHT, rnd() % WIDTH, rnd(), rnd(), rnd());
+                q.emplace_back(start_x, start_y, rnd(), rnd(), rnd());
             } else {
                 q.emplace_back(start_x, start_y, CENTER_R, CENTER_G, CENTER_B);
             }
