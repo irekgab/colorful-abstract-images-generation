@@ -16,12 +16,6 @@ void bfs(Image &image) {
         q.pop_front();
         int i = get<0>(x);
         int j = get<1>(x);
-        if (image.p[i][j].a == 0) {
-            image.p[i][j].r = get<2>(x);
-            image.p[i][j].g = get<3>(x);
-            image.p[i][j].b = get<4>(x);
-            image.p[i][j].a = 255;
-        }
         vector<pair<int, int>> c;
         for (auto e: dir) {
             int i1 = i + e[0];
@@ -73,17 +67,21 @@ Image img() {
             start_x = signed(rnd() % HEIGHT), start_y = signed(rnd() % WIDTH);
         }
 
-        int r = max(R[0], min(int((unsigned char) rnd()), R[1]));
-        int g = max(G[0], min(int((unsigned char) rnd()), G[1]));
-        int b = max(B[0], min(int((unsigned char) rnd()), B[1]));
-        if (!RANDOM_CENTER_COL) {
-            r = max(R[0], min(CENTER_R, R[1]));
-            g = max(G[0], min(CENTER_G, G[1]));
-            b = max(B[0], min(CENTER_B, B[1]));
+        int r = CENTER_R;
+        int g = CENTER_G;
+        int b = CENTER_B;
+        if (RANDOM_CENTER_COL) {
+            r = max(R[0], min(int((unsigned char) rnd()), R[1]));
+            g = max(G[0], min(int((unsigned char) rnd()), G[1]));
+            b = max(B[0], min(int((unsigned char) rnd()), B[1]));
         }
+        r = max(R[0], min(r, R[1]));
+        g = max(G[0], min(g, G[1]));
+        b = max(B[0], min(b, B[1]));
         image.p[start_x][start_y].r = r;
         image.p[start_x][start_y].g = g;
         image.p[start_x][start_y].b = b;
+        image.p[start_x][start_y].a = 255;
         q.emplace_back(start_x, start_y, r, g, b);
     }
 
