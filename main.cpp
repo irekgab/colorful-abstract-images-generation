@@ -18,6 +18,6 @@ int main(int argc, char *argv[]) {
     const string filename = argc > 1 ? argv[1] : "test.png";
     get_params();
     Image res = img();
-    encodeOneStep("result.png", res);
+    encodeOneStep(FILENAME, res);
     return 0;
 }

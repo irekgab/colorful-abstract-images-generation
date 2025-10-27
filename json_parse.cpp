@@ -11,11 +11,12 @@ void get_params() {
     IStreamWrapper isw(in);
     d.ParseStream(isw);
 
+    FILENAME = d["filename"].GetString();
     WIDTH = d["width"].GetInt();
     HEIGHT = d["height"].GetInt();
     VARIETY = d["variety"].GetInt();
     NUM = d["num"].GetInt();
-    BLACK_AND_WHITE = d["black_and_white"].GetBool();
+    MONOCHROME = d["monochrome"].GetBool();
     auto r = d["r"].GetArray();
     for (int i = 0; i < r.Size(); ++i) { R[i] = r[i].GetInt(); }
     auto g = d["g"].GetArray();
@@ -29,5 +30,5 @@ void get_params() {
     CENTER_R = d["center_r"].GetInt();
     CENTER_G = d["center_g"].GetInt();
     CENTER_B = d["center_b"].GetInt();
-    CENTER_RGB_BW = d["center_rgb_bw"].GetInt();
+    DISRUPTION = d["disruption"].GetDouble();
 }
