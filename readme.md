@@ -1,5 +1,5 @@
 
-# **Parameters explanation:**
+# Parameters explanation:
 
 - random_seed - a flag that represents whether the seed should be randomly piked 
 - seed - specifies the seed should be used in case when "random_seed" is set to false
