@@ -14,8 +14,7 @@ void encodeOneStep(const string &filename, Image image) {
     }
 }
 
-int main(int argc, char *argv[]) {
-    const string filename = argc > 1 ? argv[1] : "test.png";
+int main() {
     get_params();
     Image res = img();
     encodeOneStep(FILENAME, res);

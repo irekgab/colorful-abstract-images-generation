@@ -1,13 +1,17 @@
 #include "structs.h"
 #include "params.h"
 
-mt19937 rnd(chrono::high_resolution_clock::now().time_since_epoch().count());
+mt19937 rnd(0);
 
 deque<tuple<int, int, unsigned char, unsigned char, unsigned char>> q;
-vector<vector<int>> dir({{-1, 0},
-                         {0,  -1},
-                         {1,  0},
-                         {0,  1}});
+vector<vector<int>> directions({{-1, 0},
+                                {0,  -1},
+                                {1,  0},
+                                {0,  1},
+                                {-1, -1},
+                                {-1, 1},
+                                {1,  -1},
+                                {1,  1}});
 
 void bfs(Image &image) {
     while (!q.empty()) {
@@ -17,32 +21,32 @@ void bfs(Image &image) {
         int i = get<0>(x);
         int j = get<1>(x);
         vector<pair<int, int>> c;
-        for (auto e: dir) {
+        for (auto e: directions) {
             int i1 = i + e[0];
             int j1 = j + e[1];
             if (0 <= i1 && i1 < HEIGHT && 0 <= j1 && j1 < WIDTH && image.p[i1][j1].a == 0) {
                 c.emplace_back(i1, j1);
             }
         }
+        auto calc_probability = [&](double prob) { return (rnd() < prob * UINT32_MAX); };
         for (auto &k: c) {
             int i1 = k.first;
             int j1 = k.second;
-            int k1 = signed(rnd() % VARIETY);
-            int k2 = signed(rnd() % VARIETY);
-            int k3 = signed(rnd() % VARIETY);
+            int kr = signed(rnd() % VARIETY);
+            int kg = signed(rnd() % VARIETY);
+            int kb = signed(rnd() % VARIETY);
+            int delta_r = 0, delta_g = 0, delta_b = 0;
+            delta_r += (calc_probability(R_INCREASE_PROBABILITY)) * kr;
+            delta_g += (calc_probability(G_INCREASE_PROBABILITY)) * kg;
+            delta_b += (calc_probability(B_INCREASE_PROBABILITY)) * kb;
+            delta_r -= (calc_probability(R_DECREASE_PROBABILITY)) * kr;
+            delta_g -= (calc_probability(G_DECREASE_PROBABILITY)) * kg;
+            delta_b -= (calc_probability(B_DECREASE_PROBABILITY)) * kb;
             if (0 <= i1 && i1 < HEIGHT && 0 <= j && j < WIDTH && image.p[i1][j1].a == 0) {
-                int r, g, b;
-                if (!MONOCHROME) {
-                    r = signed((rnd() % 3) - 1) * k1 + int(image.p[i][j].r);
-                    g = signed((rnd() % 3) - 1) * k2 + int(image.p[i][j].g);
-                    b = signed((rnd() % 3) - 1) * k3 + int(image.p[i][j].b);
-                } else {
-                    int rd = signed(rnd() % 3) - 1;
-                    r = rd * k1 + int(image.p[i][j].r);
-                    g = rd * k1 + int(image.p[i][j].g);
-                    b = rd * k1 + int(image.p[i][j].b);
-                }
-                if (rnd() <= DISRUPTION * UINT32_MAX) {
+                int r = delta_r + int(image.p[i][j].r);
+                int g = delta_g + int(image.p[i][j].g);
+                int b = delta_b + int(image.p[i][j].b);
+                if (calc_probability(DISRUPTION)) {
                     r = rnd(), g = rnd(), b = rnd();
                 }
                 r = max(R[0], min(r, R[1]));
@@ -59,8 +63,11 @@ void bfs(Image &image) {
 }
 
 Image img() {
+    unsigned int seed = chrono::high_resolution_clock::now().time_since_epoch().count();
+    if (SEED_RANDOM) { seed = SEED; }
+    rnd.seed(seed);
+    cout << seed << "\n";
     Image image(WIDTH, HEIGHT, vector<unsigned char>(WIDTH * HEIGHT * 4, 0));
-
     for (int i = 0; i < NUM; ++i) {
         int start_x = CENTER_X, start_y = CENTER_Y;
         if (RANDOM_CENTER_XY) {
