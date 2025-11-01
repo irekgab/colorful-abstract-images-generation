@@ -1,5 +1,5 @@
-#include "structs.h"
-#include "params.h"
+#include "structs.hpp"
+#include "params.hpp"
 
 mt19937 rnd(0);
 
